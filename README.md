@@ -148,6 +148,39 @@ To reset all data, clear these keys from your browser's localStorage.
 | Docs | Yellow |
 | Urgent | Orange |
 
+## Data Storage
+
+This app uses **browser LocalStorage** — there is no backend database. All your data stays in your browser.
+
+To view your data:
+1. Open browser DevTools (F12)
+2. Go to **Application** → **Local Storage** → `localhost:3000`
+3. You'll see the keys listed in the table above
+
+To clear all data:
+```javascript
+// Run in browser console
+localStorage.removeItem('vibe-pm-tasks');
+localStorage.removeItem('vibe-pm-todos');
+localStorage.removeItem('vibe-pm-notes');
+localStorage.removeItem('vibe-pm-labels');
+```
+
+## Running the App
+
+### Start Development Server
+
+```bash
+cd Vibe---Project-Management
+npm run dev
+```
+
+The app will be available at [http://localhost:3000](http://localhost:3000).
+
+### Stop the Server
+
+Press `Ctrl+C` in the terminal where the server is running.
+
 ## License
 
 MIT
