@@ -1,65 +1,74 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect } from 'react';
+import { KanbanBoard } from '@/components/KanbanBoard';
+import { TodoList } from '@/components/TodoList';
+import { Notes } from '@/components/Notes';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { KanbanTask, TodoItem, Label, DEFAULT_LABELS } from '@/types';
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+  const [tasks, setTasks] = useLocalStorage<KanbanTask[]>('vibe-pm-tasks', []);
+  const [todos, setTodos] = useLocalStorage<TodoItem[]>('vibe-pm-todos', []);
+  const [notes, setNotes] = useLocalStorage<string>('vibe-pm-notes', '');
+  const [labels] = useLocalStorage<Label[]>('vibe-pm-labels', DEFAULT_LABELS);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-zinc-950 text-zinc-100">
+      {/* Header */}
+      <header className="border-b border-zinc-800 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-zinc-800 rounded flex items-center justify-center">
+              <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+              </svg>
+            </div>
+            <h1 className="text-lg font-semibold text-zinc-100">Vibe - Project Management</h1>
+          </div>
+          <span className="text-xs text-zinc-600">auto-saved locally</span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </header>
+
+      {/* Main Content */}
+      <div className="flex h-[calc(100vh-65px)]">
+        {/* Kanban Board - Main Area */}
+        <main className="flex-1 p-6 overflow-hidden">
+          {mounted ? (
+            <KanbanBoard tasks={tasks} labels={labels} onTasksChange={setTasks} />
+          ) : (
+            <div className="flex items-center justify-center h-full text-zinc-600">
+              Loading...
+            </div>
+          )}
+        </main>
+
+        {/* Sidebar */}
+        <aside className="w-80 border-l border-zinc-800 flex flex-col">
+          {/* Todo List */}
+          <div className="flex-1 p-4 border-b border-zinc-800 overflow-hidden">
+            {mounted ? (
+              <TodoList todos={todos} onTodosChange={setTodos} />
+            ) : (
+              <div className="text-zinc-600 text-sm">Loading...</div>
+            )}
+          </div>
+
+          {/* Notes */}
+          <div className="flex-1 p-4 overflow-hidden">
+            {mounted ? (
+              <Notes notes={notes} onNotesChange={setNotes} />
+            ) : (
+              <div className="text-zinc-600 text-sm">Loading...</div>
+            )}
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }
