@@ -1,36 +1,153 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vibe - Project Management
+
+A clean, dark-mode project management app built for vibe coders. Features a Kanban board, quick tasks, and notes — all saved locally in your browser.
+
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8)
+
+## Features
+
+### Kanban Board
+- **Three columns**: Todo, In Progress, Complete
+- **Drag and drop**: Move tasks between columns
+- **Priorities**: Low, Medium, High — auto-sorted with high priority at top
+- **Labels**: Tag tasks with Bug, Feature, Design, Docs, or Urgent
+- **Due dates**: Set deadlines with overdue highlighting
+- **Archive**: Completed tasks can be archived for a cleaner board
+
+### Quick Tasks
+- Simple checkbox-based todo list
+- Perfect for small tasks that don't need full Kanban treatment
+- Completed tasks sort to the bottom
+
+### Notes
+- Freeform textarea for jotting down ideas
+- Auto-saves as you type
+
+### Data Persistence
+- All data saved to browser LocalStorage
+- Works offline
+- No account required
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Storage**: LocalStorage
+- **Drag & Drop**: Native HTML5 API
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/frank-goa/Vibe---Project-Management.git
+cd Vibe---Project-Management
+
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/
+│   ├── globals.css      # Global styles and dark theme
+│   ├── layout.tsx       # Root layout with metadata
+│   └── page.tsx         # Main page component
+├── components/
+│   ├── KanbanBoard.tsx  # Board with columns and drag-drop
+│   ├── KanbanCard.tsx   # Individual task card
+│   ├── TodoList.tsx     # Quick tasks sidebar
+│   └── Notes.tsx        # Notes textarea
+├── hooks/
+│   └── useLocalStorage.ts  # LocalStorage hook with SSR support
+└── types/
+    └── index.ts         # TypeScript types and constants
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Usage
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Creating Tasks
 
-## Deploy on Vercel
+1. Click **+ Add task** in any column
+2. Enter a title
+3. Select priority (Low/Med/High)
+4. Optionally add labels and due date
+5. Click **Add** or press Enter
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Editing Tasks
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Hover over a task card
+2. Click the pencil icon
+3. Modify title, description, priority, labels, or due date
+4. Click **Save**
+
+### Moving Tasks
+
+- **Drag and drop** cards between columns
+- Tasks in the same column are auto-sorted by priority
+
+### Archiving Tasks
+
+1. Move a task to the **Complete** column
+2. Hover and click the archive icon (box)
+3. Archived tasks appear in a collapsible section at the bottom
+
+### Quick Tasks
+
+- Type in the input and press Enter or click **+**
+- Click the checkbox to complete
+- Click **x** to delete
+
+### Notes
+
+- Just start typing — saves automatically
+
+## LocalStorage Keys
+
+The app uses the following localStorage keys:
+
+| Key | Description |
+|-----|-------------|
+| `vibe-pm-tasks` | Kanban board tasks |
+| `vibe-pm-todos` | Quick tasks list |
+| `vibe-pm-notes` | Notes content |
+| `vibe-pm-labels` | Custom labels (defaults provided) |
+
+To reset all data, clear these keys from your browser's localStorage.
+
+## Default Labels
+
+| Label | Color |
+|-------|-------|
+| Bug | Red |
+| Feature | Blue |
+| Design | Purple |
+| Docs | Yellow |
+| Urgent | Orange |
+
+## License
+
+MIT
